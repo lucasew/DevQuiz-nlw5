@@ -2,9 +2,9 @@
   config.android_sdk.accept_license = true;
 }}:
 let
-  buildToolsVersion = "28.0.3";
+  buildToolsVersion = "29.0.2";
   android = pkgs.androidenv.composeAndroidPackages {
-    platformVersions = [ "27" "28" "29" ];
+    platformVersions = [ "27" "28" "29" "30"];
     abiVersions = ["armeabi-v7a" "arm64-v8a"]; 
     buildToolsVersions = [buildToolsVersion];
     useGoogleAPIs = true;
@@ -53,6 +53,6 @@ pkgs.mkShell {
     # autoPatchelfHook
   ];
   # override the aapt2 that gradle uses with the nix-shipped version
-  GRADLE_OPTS = "-Dorg.gradle.project.android.aapt2FromMavenOverride=${ANDROID_HOME}/build-tools/${buildToolsVersion}/aapt2";
+  # GRADLE_OPTS = "-Dorg.gradle.project.android.aapt2FromMavenOverride=${ANDROID_HOME}/build-tools/${buildToolsVersion}/aapt2";
   inherit ANDROID_HOME;
 }
