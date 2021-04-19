@@ -4,7 +4,7 @@
 let
   buildToolsVersion = "29.0.2";
   android = pkgs.androidenv.composeAndroidPackages {
-    platformVersions = [ "27" "28" "29" "30"];
+    platformVersions = [ "30" ];
     abiVersions = ["armeabi-v7a" "arm64-v8a"]; 
     buildToolsVersions = [buildToolsVersion];
     useGoogleAPIs = true;
@@ -37,6 +37,7 @@ pkgs.mkShell {
     flutter
     glibc
     jre
+    dart
     # # linux dev
     # cmake
     # ninja
@@ -48,7 +49,6 @@ pkgs.mkShell {
     # lzma.dev
     # pcre.dev
     # xorg.libX11
-    # dart
     # sdk
     # autoPatchelfHook
   ];
