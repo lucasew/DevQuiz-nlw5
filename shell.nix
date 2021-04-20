@@ -27,9 +27,36 @@ let
       # lic mips-android-sysimage-license e9acab5b5fbb560a72cfaecce8946896ff6aab9d
     '';
   });
-  ANDROID_HOME = "${sdk}/libexec/android-sdk";
+  runtimeLibPackages = with pkgs; [
+    gtk3
+    glib
+    util-linux
+    lzma
+    pcre
+    xorg.libX11
+    wayland
+    atk
+    libglvnd
+    libselinux
+    libsepol
+    libthai
+    libdatrie
+    xorg.xdm
+  ];
+  buildLibPackages = with pkgs; [
+    gtk3.dev
+    glib.dev
+    util-linux.dev
+    lzma.dev
+    pcre.dev
+    xorg.libX11.dev
+    libselinux.dev
+    libsepol.dev
+    libthai.dev
+    libdatrie.dev
+  ];
 in
-pkgs.mkShell {
+pkgs.mkShell rec {
   shellHook = with pkgs; ''
     # autoPatchelfFile ./linux/flutter/ephemeral/libflutter_linux_gtk.so -- "${wayland}/lib" "${gtk3-x11}/lib" "/run/current-system/sw/lib"
   '';
@@ -38,21 +65,18 @@ pkgs.mkShell {
     glibc
     jre
     dart
-    # # linux dev
-    # cmake
-    # ninja
-    # clang
-    # pkg-config
-    # # gnome3.gtk.dev
-    # glib.dev
-    # util-linux.dev
-    # lzma.dev
-    # pcre.dev
-    # xorg.libX11
-    # sdk
-    # autoPatchelfHook
-  ];
+    # linux dev
+    cmake
+    ninja
+    clang
+    pkg-config
+  ] ++ buildLibPackages;
   # override the aapt2 that gradle uses with the nix-shipped version
   # GRADLE_OPTS = "-Dorg.gradle.project.android.aapt2FromMavenOverride=${ANDROID_HOME}/build-tools/${buildToolsVersion}/aapt2";
-  inherit ANDROID_HOME;
+  ANDROID_HOME = "${sdk}/libexec/android-sdk";
+  NIX_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath runtimeLibPackages;
+  C_INCLUDE_PATH = builtins.concatStringsSep ":" (builtins.map (p: "${p.outPath}/include") buildLibPackages);
+  CPLUS_INCLUDE_PATH = C_INCLUDE_PATH;
+  LD_LIBRARY_PATH = NIX_LD_LIBRARY_PATH;
+  NIX_LD = builtins.readFile "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
 }
