@@ -9,6 +9,7 @@ class ChartWidget extends StatelessWidget {
     return ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 80, maxWidth: 80),
         child: FittedBox(
+            fit: BoxFit.fitHeight,
             child: Padding(
                 padding: EdgeInsets.only(left: 12),
                 child: Stack(
