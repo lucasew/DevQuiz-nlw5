@@ -23,7 +23,10 @@ class ChartWidget extends StatelessWidget {
                               backgroundColor: AppColors.chartSecondary,
                               valueColor: AlwaysStoppedAnimation<Color>(
                                   AppColors.chartPrimary))),
-                      Center(child: Text("75%", style: AppTextStyles.heading.merge(TextStyle(fontSize: 10))))
+                      Center(
+                          child: Text("75%",
+                              style: AppTextStyles.heading
+                                  .merge(TextStyle(fontSize: 10))))
                     ]))));
   }
 }

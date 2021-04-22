@@ -18,33 +18,35 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBarWidget(),
         body: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Column(children: [
-          SizedBox(height: 24),
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: minLevelButtonSpace),
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Expanded(child: LevelButtonWidget.facil(), flex: 1),
-                SizedBox(width: minLevelButtonSpace),
-                Expanded(child: LevelButtonWidget.medio(), flex: 1),
-                SizedBox(width: minLevelButtonSpace),
-                Expanded(child: LevelButtonWidget.dificil(), flex: 1),
-                SizedBox(width: minLevelButtonSpace),
-                Expanded(child: LevelButtonWidget.perito(), flex: 1),
-              ])),
-          SizedBox(height: 24),
-          Expanded(
-              child: GridView.count(
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  crossAxisCount: (size.width / 200).round(),
-                  children: [
-                QuizCardWidget(),
-                QuizCardWidget(),
-                QuizCardWidget(),
-                QuizCardWidget()
-              ]))
-        ])));
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Column(children: [
+              SizedBox(height: 24),
+              Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: minLevelButtonSpace),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(child: LevelButtonWidget.facil(), flex: 1),
+                        SizedBox(width: minLevelButtonSpace),
+                        Expanded(child: LevelButtonWidget.medio(), flex: 1),
+                        SizedBox(width: minLevelButtonSpace),
+                        Expanded(child: LevelButtonWidget.dificil(), flex: 1),
+                        SizedBox(width: minLevelButtonSpace),
+                        Expanded(child: LevelButtonWidget.perito(), flex: 1),
+                      ])),
+              SizedBox(height: 24),
+              Expanded(
+                  child: GridView.count(
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      crossAxisCount: (size.width / 200).round(),
+                      children: [
+                    QuizCardWidget(),
+                    QuizCardWidget(),
+                    QuizCardWidget(),
+                    QuizCardWidget()
+                  ]))
+            ])));
   }
 }
