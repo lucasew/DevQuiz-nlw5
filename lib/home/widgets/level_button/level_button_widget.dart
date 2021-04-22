@@ -24,8 +24,9 @@ class LevelButtonWidget extends StatelessWidget {
             color: this.buttonColor,
             border: Border.fromBorderSide(BorderSide(color: this.borderColor))),
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
+            padding: const EdgeInsets.symmetric(vertical: 6),
             child: Text(label,
+                textAlign: TextAlign.center,
                 style: GoogleFonts.notoSans(
                     color: this.textColor, fontSize: 13))));
     // FIXME: cadê o texto :v
