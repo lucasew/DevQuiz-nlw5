@@ -1,0 +1,1 @@
+enum HomeState { EMPTY, SUCCESS, LOADING, ERROR }
