@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import '../../../core/core.dart';
 
 class AnswerWidget extends StatelessWidget {
-  const AnswerWidget(
-      {Key? key,
-      required this.title,
-      this.isRight = false,
-      this.isSelected = false})
-      : super(key: key);
+  const AnswerWidget({
+    Key? key,
+    required this.title,
+    this.isRight = false,
+    this.isSelected = false,
+    this.isMarked = false,
+  }) : super(key: key);
   final String title;
   final bool isRight;
   final bool isSelected;
+  final bool isMarked;
 
   Color get _selectedColorRight =>
       isRight ? AppColors.darkGreen : AppColors.darkRed;
@@ -39,7 +41,7 @@ class AnswerWidget extends StatelessWidget {
               color: isSelected ? _selectedColorCardRight : AppColors.white,
               borderRadius: BorderRadius.circular(10),
               border: Border.fromBorderSide(BorderSide(
-                  color: isSelected
+                  color: isMarked ? Colors.black : isSelected
                       ? _selectedBorderCardRight
                       : AppColors.border))),
           child:
@@ -53,7 +55,7 @@ class AnswerWidget extends StatelessWidget {
                 width: 24,
                 height: 24,
                 decoration: BoxDecoration(
-                    color: isSelected ? _selectedBorderRight : AppColors.border,
+                    color: isSelected ? _selectedColorRight : AppColors.border,
                     borderRadius: BorderRadius.circular(500),
                     border: Border.fromBorderSide(BorderSide(
                         color: isSelected

@@ -15,11 +15,23 @@ class QuizWidget extends StatefulWidget {
 }
 
 class _QuizWidgetState extends State<QuizWidget> {
+    void _triggerRedraw() {
+        print(marked.value);
+        setState(() {});
+    }
+
+    ValueNotifier<int?> marked = ValueNotifier<int?>(null);
+
   void initState() {
     super.initState();
-    widget.question.answeredNotifier.addListener(() {
-      setState(() {});
-    });
+    widget.question.answeredNotifier.addListener(_triggerRedraw);
+    marked.addListener(_triggerRedraw);
+  }
+
+  void dispose() {
+      super.dispose();
+      widget.question.answeredNotifier.removeListener(_triggerRedraw);
+      marked.removeListener(_triggerRedraw);
   }
 
   @override
@@ -28,11 +40,15 @@ class _QuizWidgetState extends State<QuizWidget> {
     for (var i = 0; i < widget.question.answers.length; i++) {
       var a = widget.question.answers[i];
       widgets.add(GestureDetector(
-          onTap: () => widget.onTap(i),
+          onTap: () {
+              widget.onTap(i);
+              marked.value = i;
+          },
           child: AnswerWidget(
             title: a.title,
             isRight: a.isRight,
             isSelected: widget.question.answered == i,
+            isMarked: marked.value != null && marked.value == i
           )));
     }
     return WidthLimiterWidget(

@@ -50,9 +50,11 @@ class _ChallengePageState extends State<ChallengePage> {
                 preferredSize: Size.fromHeight(60),
                 child: SafeArea(
                     top: true,
-                    child: QuestionIndicatorWidget(
-                        totalQuestoes: widget.quiz.questions.length,
-                        questaoAtual: controller.currentQuestion))),
+                    child: ValueListenableBuilder<int>(
+                        valueListenable: controller.currentQuestionNotifier,
+                        builder: (context, value, _) => QuestionIndicatorWidget(
+                            totalQuestoes: widget.quiz.questions.length,
+                            questaoAtual: controller.currentQuestion)))),
             body: PageView(
                 physics: NeverScrollableScrollPhysics(),
                 controller: pageController,
@@ -76,8 +78,7 @@ class _ChallengePageState extends State<ChallengePage> {
                               child: NextButtonWidget.white(
                                   label: "Pular",
                                   onTap: () {
-                                    if (controller.currentQuestion + 1 <
-                                        this.widget.quiz.questions.length) {
+                                    if (controller.currentQuestion + 1 < this.widget.quiz.questions.length) {
                                       pageController.nextPage(
                                         duration: Duration(milliseconds: 100),
                                         curve: Curves.linear,
@@ -96,16 +97,8 @@ class _ChallengePageState extends State<ChallengePage> {
                                     if (selected == null) {
                                       return;
                                     }
-                                    if (widget
-                                            .quiz
-                                            .questions[
-                                                controller.currentQuestion]
-                                            .answered ==
-                                        null) {
-                                      widget
-                                          .quiz
-                                          .questions[controller.currentQuestion]
-                                          .answered = selected;
+                                    if (question.answered == null) {
+                                      question.answered = selected;
                                     }
                                     await Future.delayed(Duration(seconds: 1));
                                     if (controller.currentQuestion + 1 <
