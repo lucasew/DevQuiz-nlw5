@@ -25,7 +25,7 @@ class ChartWidget extends StatelessWidget {
                               valueColor: AlwaysStoppedAnimation<Color>(
                                   AppColors.chartPrimary))),
                       Center(
-                          child: Text("${(grade*100).round()}%",
+                          child: Text("${(grade * 100).round()}%",
                               style: AppTextStyles.heading
                                   .merge(TextStyle(fontSize: 10))))
                     ]))));

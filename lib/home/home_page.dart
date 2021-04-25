@@ -24,7 +24,8 @@ class _HomePageState extends State<HomePage> {
     controller.load();
   }
 
-  double get grade => controller.quizzes.map((q) => q.grade).reduce((a, b) => (a + b) / 2);
+  double get grade =>
+      controller.quizzes.map((q) => q.grade).reduce((a, b) => (a + b) / 2);
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +63,12 @@ class _HomePageState extends State<HomePage> {
                                 quiz: q,
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                          ChallengePage(quiz: q))).then((_) {
-                                      setState(() {});
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChallengePage(quiz: q)))
+                                      .then((_) {
+                                    setState(() {});
                                   });
                                 }))
                             .toList()))

@@ -36,7 +36,9 @@ class AppBarWidget extends PreferredSize {
                                   image: DecorationImage(
                                       image: NetworkImage(user.photoUrl)))),
                         ])),
-                Align(alignment: Alignment(0, 1), child: ScoreCardWidget(grade: grade))
+                Align(
+                    alignment: Alignment(0, 1),
+                    child: ScoreCardWidget(grade: grade))
               ]),
             ));
 }

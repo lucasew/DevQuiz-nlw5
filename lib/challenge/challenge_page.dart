@@ -96,8 +96,16 @@ class _ChallengePageState extends State<ChallengePage> {
                                     if (selected == null) {
                                       return;
                                     }
-                                    if (widget.quiz.questions[controller.currentQuestion].answered == null) {
-                                        widget.quiz.questions[controller.currentQuestion].answered = selected;
+                                    if (widget
+                                            .quiz
+                                            .questions[
+                                                controller.currentQuestion]
+                                            .answered ==
+                                        null) {
+                                      widget
+                                          .quiz
+                                          .questions[controller.currentQuestion]
+                                          .answered = selected;
                                     }
                                     await Future.delayed(Duration(seconds: 1));
                                     if (controller.currentQuestion + 1 <

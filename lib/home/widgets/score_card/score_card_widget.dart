@@ -3,7 +3,7 @@ import '../../../core/core.dart';
 import '../chart/chart_widget.dart';
 
 class ScoreCardWidget extends StatelessWidget {
-    final double grade;
+  final double grade;
   const ScoreCardWidget({Key? key, required this.grade}) : super(key: key);
 
   @override
