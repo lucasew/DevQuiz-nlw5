@@ -5,22 +5,45 @@ import './widgets/question_indicator/question_indicator_widget.dart';
 import './widgets/next_button/next_button_widget.dart';
 import '../shared/controllers/go_back_by_esc/go_back_by_esc_controller.dart';
 import '../shared/models/models.dart';
+import './challenge_controller.dart';
 
 class ChallengePage extends StatefulWidget {
   final QuizModel quiz;
-  final int questao;
-  ChallengePage({Key? key, required this.quiz, this.questao = 0})
-      : assert(questao < quiz.questions.length),
-        super(key: key);
+  ChallengePage({Key? key, required this.quiz}) : super(key: key);
 
   @override
   _ChallengePageState createState() => _ChallengePageState();
 }
 
 class _ChallengePageState extends State<ChallengePage> {
+  final controller = ChallengeController();
+  final pageController = PageController();
+
+  void _handleCurrentQuestionNotifier() {
+    controller.currentQuestion = pageController.page!.round();
+    print("current question ${controller.currentQuestion}");
+    setState(() {});
+  }
+
+  void initState() {
+    pageController.addListener(_handleCurrentQuestionNotifier);
+    super.initState();
+  }
+
+  void dispose() {
+    pageController.removeListener(_handleCurrentQuestionNotifier);
+    super.dispose();
+  }
+
+  int? selected;
+
+  QuestionModel get question =>
+      widget.quiz.questions[controller.currentQuestion];
+
   @override
   Widget build(BuildContext context) {
-    var quiz = widget.quiz;
+    print("rebuild challenge");
+    print(this.controller.currentQuestion);
     return GoBackByEscController(
         child: Scaffold(
             appBar: PreferredSize(
@@ -28,10 +51,19 @@ class _ChallengePageState extends State<ChallengePage> {
                 child: SafeArea(
                     top: true,
                     child: QuestionIndicatorWidget(
-                        quiz: quiz, questao: widget.questao))),
-            body: QuizWidget(
-              question: quiz.questions[widget.questao],
-            ),
+                        totalQuestoes: widget.quiz.questions.length,
+                        questaoAtual: controller.currentQuestion))),
+            body: PageView(
+                physics: NeverScrollableScrollPhysics(),
+                controller: pageController,
+                children: widget.quiz.questions
+                    .map((q) => QuizWidget(
+                        question: q,
+                        onTap: (i) {
+                          print("selected $i");
+                          this.selected = i;
+                        }))
+                    .toList()),
             bottomNavigationBar: SafeArea(
                 bottom: true,
                 child: Padding(
@@ -42,11 +74,44 @@ class _ChallengePageState extends State<ChallengePage> {
                         children: [
                           Expanded(
                               child: NextButtonWidget.white(
-                                  label: "Fácil", onTap: () {})),
+                                  label: "Pular",
+                                  onTap: () {
+                                    if (controller.currentQuestion + 1 <
+                                        this.widget.quiz.questions.length) {
+                                      pageController.nextPage(
+                                        duration: Duration(milliseconds: 100),
+                                        curve: Curves.linear,
+                                      );
+                                      selected = question.answered;
+                                    } else {
+                                      // TODO: lógica de fim de questionario
+                                      Navigator.pop(context);
+                                    }
+                                  })),
                           SizedBox(width: 7),
                           Expanded(
                               child: NextButtonWidget.green(
-                                  label: "Confirmar", onTap: () {})),
+                                  label: "Confirmar",
+                                  onTap: () async {
+                                    if (selected == null) {
+                                      return;
+                                    }
+                                    if (widget.quiz.questions[controller.currentQuestion].answered == null) {
+                                        widget.quiz.questions[controller.currentQuestion].answered = selected;
+                                    }
+                                    await Future.delayed(Duration(seconds: 1));
+                                    if (controller.currentQuestion + 1 <
+                                        this.widget.quiz.questions.length) {
+                                      pageController.nextPage(
+                                        duration: Duration(milliseconds: 100),
+                                        curve: Curves.linear,
+                                      );
+                                      selected = question.answered;
+                                    } else {
+                                      // TODO: lógica de fim de questionario
+                                      Navigator.pop(context);
+                                    }
+                                  })),
                         ])))));
   }
 }

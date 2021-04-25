@@ -4,12 +4,12 @@ import './models.dart';
 enum Level { FACIL, MEDIO, DIFICIL, PERITO }
 
 extension LevelStringExtension on String {
-    Level get toLevel => {
+  Level get toLevel => {
         "FACIL": Level.FACIL,
         "MEDIO": Level.MEDIO,
         "DIFICIL": Level.DIFICIL,
         "PERITO": Level.PERITO
-    }[this]!;
+      }[this]!;
 }
 
 class QuizModel {
@@ -21,7 +21,7 @@ class QuizModel {
   int get questionsAnswered => this.questions.where((i) => i.isAnswered).length;
   int get questionsGot =>
       this.questions.where((q) => q.isAnswered && q.isRight).length;
-  double get grade => questionsGot / questionsAnswered;
+  double get grade => questionsAnswered == 0 ? 0 : questionsGot / questionsAnswered;
 
   QuizModel({
     required this.title,
@@ -41,10 +41,9 @@ class QuizModel {
 
   factory QuizModel.fromMap(Map<String, dynamic> map) {
     return QuizModel(
-      title: map['title'],
-      questions: map['questions'].map((q) => QuestionModel.fromMap(q)),
-      imagem: map['imagem'],
-      level: map['leve'].toString().toLevel
-    );
+        title: map['title'],
+        questions: map['questions'].map((q) => QuestionModel.fromMap(q)),
+        imagem: map['imagem'],
+        level: map['leve'].toString().toLevel);
   }
 }

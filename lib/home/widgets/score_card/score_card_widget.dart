@@ -3,7 +3,8 @@ import '../../../core/core.dart';
 import '../chart/chart_widget.dart';
 
 class ScoreCardWidget extends StatelessWidget {
-  const ScoreCardWidget({Key? key}) : super(key: key);
+    final double grade;
+  const ScoreCardWidget({Key? key, required this.grade}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class ScoreCardWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15)),
             child:
                 Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Expanded(flex: 1, child: ChartWidget()),
+              Expanded(flex: 1, child: ChartWidget(grade: grade)),
               Expanded(
                   flex: 3,
                   child: Padding(

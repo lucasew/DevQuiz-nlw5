@@ -1,11 +1,16 @@
 import './answer_model.dart';
+import 'package:flutter/foundation.dart';
 
 class QuestionModel {
   final String title;
   final List<AnswerModel> answers;
-  final int? answered;
+  final answeredNotifier = ValueNotifier<int?>(null);
+
+  int? get answered => answeredNotifier.value;
+  set answered(int? value) => answeredNotifier.value = value;
 
   get isAnswered => answered != null;
+
   get isRight {
     if (isAnswered) {
       return answers.elementAt(answered as int).isRight;
@@ -18,9 +23,11 @@ class QuestionModel {
   QuestionModel({
     required this.title,
     required this.answers,
-    this.answered,
+    int? answered,
   })  : assert(answers.length == 5),
-        assert(answered == null ? true : answered < answers.length);
+        assert(answered == null ? true : answered < answers.length) {
+    this.answered = answered;
+  }
 
   Map<String, dynamic> toMap() {
     return {

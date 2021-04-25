@@ -4,25 +4,41 @@ import '../answer/answer_widget.dart';
 import '../../../shared/widgets/width_limiter/width_limiter_widget.dart';
 import '../../../shared/models/models.dart';
 
-class QuizWidget extends StatelessWidget {
+class QuizWidget extends StatefulWidget {
   final QuestionModel question;
-  const QuizWidget({Key? key, required this.question}) : super(key: key);
+  final Function(int) onTap;
+  const QuizWidget({Key? key, required this.question, required this.onTap})
+      : super(key: key);
+
+  @override
+  _QuizWidgetState createState() => _QuizWidgetState();
+}
+
+class _QuizWidgetState extends State<QuizWidget> {
+  void initState() {
+    super.initState();
+    widget.question.answeredNotifier.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> widgets = [];
-    for (var i = 0; i < question.answers.length; i++) {
-      var a = question.answers[i];
-      widgets.add(AnswerWidget(
-        title: a.title,
-        isRight: a.isRight,
-        isSelected: question.answered == i,
-      ));
+    for (var i = 0; i < widget.question.answers.length; i++) {
+      var a = widget.question.answers[i];
+      widgets.add(GestureDetector(
+          onTap: () => widget.onTap(i),
+          child: AnswerWidget(
+            title: a.title,
+            isRight: a.isRight,
+            isSelected: widget.question.answered == i,
+          )));
     }
     return WidthLimiterWidget(
         maxWidth: 400,
         child: ListView(children: [
-          Text(question.title, style: AppTextStyles.heading),
+          Text(widget.question.title, style: AppTextStyles.heading),
           SizedBox(height: 24),
           ...widgets
         ]));

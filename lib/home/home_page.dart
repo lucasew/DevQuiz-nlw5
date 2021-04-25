@@ -24,13 +24,15 @@ class _HomePageState extends State<HomePage> {
     controller.load();
   }
 
+  double get grade => controller.quizzes.map((q) => q.grade).reduce((a, b) => (a + b) / 2);
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var minLevelButtonSpace = size.width / 20;
     if (controller.state == HomeState.SUCCESS) {
       return Scaffold(
-          appBar: AppBarWidget(user: controller.user),
+          appBar: AppBarWidget(user: controller.user, grade: grade),
           body: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5),
               child: Column(children: [
@@ -56,9 +58,17 @@ class _HomePageState extends State<HomePage> {
                         mainAxisSpacing: 16,
                         crossAxisCount: (size.width / 200).round(),
                         children: controller.quizzes
-                        .map((q) => QuizCardWidget(quiz: q, onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ChallengePage(quiz: q)));
-                        }))
+                            .map((q) => QuizCardWidget(
+                                quiz: q,
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                          ChallengePage(quiz: q))).then((_) {
+                                      setState(() {});
+                                  });
+                                }))
                             .toList()))
               ])));
     } else {

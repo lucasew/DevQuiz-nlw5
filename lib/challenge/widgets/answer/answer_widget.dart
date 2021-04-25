@@ -60,7 +60,11 @@ class AnswerWidget extends StatelessWidget {
                             ? _selectedBorderRight
                             : AppColors.border))),
                 child: isSelected
-                    ? Icon(_selectedIconRight, size: 16, color: Colors.white)
+                    ? Icon(_selectedIconRight,
+                        size: 16,
+                        color: isSelected
+                            ? _selectedBorderCardRight
+                            : AppColors.border)
                     : null)
           ]),
         ));

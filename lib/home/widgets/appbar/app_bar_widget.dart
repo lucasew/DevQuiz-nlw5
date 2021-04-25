@@ -5,7 +5,8 @@ import '../../../shared/models/models.dart';
 
 class AppBarWidget extends PreferredSize {
   final UserModel user;
-  AppBarWidget({required this.user})
+  final double grade;
+  AppBarWidget({required this.user, required this.grade})
       : super(
             preferredSize: Size.fromHeight(250),
             child: Container(
@@ -35,7 +36,7 @@ class AppBarWidget extends PreferredSize {
                                   image: DecorationImage(
                                       image: NetworkImage(user.photoUrl)))),
                         ])),
-                Align(alignment: Alignment(0, 1), child: ScoreCardWidget())
+                Align(alignment: Alignment(0, 1), child: ScoreCardWidget(grade: grade))
               ]),
             ));
 }
