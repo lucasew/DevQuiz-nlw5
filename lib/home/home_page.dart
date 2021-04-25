@@ -5,6 +5,7 @@ import './widgets/quiz_card/quiz_card_widget.dart';
 import './home_controller.dart';
 import './home_state.dart';
 import '../core/core.dart';
+import '../challenge/challenge_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -55,7 +56,9 @@ class _HomePageState extends State<HomePage> {
                         mainAxisSpacing: 16,
                         crossAxisCount: (size.width / 200).round(),
                         children: controller.quizzes
-                            .map((q) => QuizCardWidget(quiz: q))
+                        .map((q) => QuizCardWidget(quiz: q, onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ChallengePage(quiz: q)));
+                        }))
                             .toList()))
               ])));
     } else {

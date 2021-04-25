@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("widget");
     return MaterialApp(
       title: "DevQuiz",
       home: HomePage(),
