@@ -41,9 +41,11 @@ class AnswerWidget extends StatelessWidget {
               color: isSelected ? _selectedColorCardRight : AppColors.white,
               borderRadius: BorderRadius.circular(10),
               border: Border.fromBorderSide(BorderSide(
-                  color: isMarked ? Colors.black : isSelected
-                      ? _selectedBorderCardRight
-                      : AppColors.border))),
+                  color: isMarked
+                      ? Colors.black
+                      : isSelected
+                          ? _selectedBorderCardRight
+                          : AppColors.border))),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Expanded(

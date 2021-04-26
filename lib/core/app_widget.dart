@@ -9,28 +9,27 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
-    final ready = ValueNotifier<bool>(false);
-    HomeController homeController = HomeController();
+  final ready = ValueNotifier<bool>(false);
+  HomeController homeController = HomeController();
 
-    void _handleStateChange() {
-        setState((){});
-    }
+  void _handleStateChange() {
+    setState(() {});
+  }
 
-    void initState() {
-        ready.addListener(_handleStateChange);
-        super.initState();
-        Future.wait([
-            homeController.load()
-        ]).then((_) {
-            ready.value = true;
-        });
-    }
+  void initState() {
+    ready.addListener(_handleStateChange);
+    super.initState();
+    Future.wait([homeController.load()]).then((_) {
+      ready.value = true;
+    });
+  }
 
-    void dispose() {
-        super.dispose();
-        ready.removeListener(_handleStateChange);
-    }
-    @override
+  void dispose() {
+    super.dispose();
+    ready.removeListener(_handleStateChange);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "DevQuiz",

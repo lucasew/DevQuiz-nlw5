@@ -39,6 +39,8 @@ class _ChallengePageState extends State<ChallengePage> {
 
   QuestionModel get question =>
       widget.quiz.questions[controller.currentQuestion];
+  bool get lastQuestion =>
+      controller.currentQuestion + 1 == widget.quiz.questions.length;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +80,7 @@ class _ChallengePageState extends State<ChallengePage> {
                               child: NextButtonWidget.white(
                                   label: "Pular",
                                   onTap: () {
-                                    if (controller.currentQuestion + 1 < this.widget.quiz.questions.length) {
+                                    if (!lastQuestion) {
                                       pageController.nextPage(
                                         duration: Duration(milliseconds: 100),
                                         curve: Curves.linear,
@@ -92,7 +94,8 @@ class _ChallengePageState extends State<ChallengePage> {
                           SizedBox(width: 7),
                           Expanded(
                               child: NextButtonWidget.green(
-                                  label: "Confirmar",
+                                  label:
+                                      lastQuestion ? "Finalizar" : "Confirmar",
                                   onTap: () async {
                                     if (selected == null) {
                                       return;
@@ -101,8 +104,7 @@ class _ChallengePageState extends State<ChallengePage> {
                                       question.answered = selected;
                                     }
                                     await Future.delayed(Duration(seconds: 1));
-                                    if (controller.currentQuestion + 1 <
-                                        this.widget.quiz.questions.length) {
+                                    if (!lastQuestion) {
                                       pageController.nextPage(
                                         duration: Duration(milliseconds: 100),
                                         curve: Curves.linear,
