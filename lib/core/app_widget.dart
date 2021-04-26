@@ -19,7 +19,8 @@ class _AppWidgetState extends State<AppWidget> {
   void initState() {
     ready.addListener(_handleStateChange);
     super.initState();
-    Future.wait([homeController.load()]).then((_) {
+    Future.wait([homeController.load(), Future.delayed(Duration(seconds: 2))])
+        .then((_) {
       ready.value = true;
     });
   }

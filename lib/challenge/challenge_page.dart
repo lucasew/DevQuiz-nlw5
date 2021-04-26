@@ -6,6 +6,7 @@ import './widgets/next_button/next_button_widget.dart';
 import '../shared/controllers/go_back_by_esc/go_back_by_esc_controller.dart';
 import '../shared/models/models.dart';
 import './challenge_controller.dart';
+import '../result/result_page.dart';
 
 class ChallengePage extends StatefulWidget {
   final QuizModel quiz;
@@ -76,28 +77,33 @@ class _ChallengePageState extends State<ChallengePage> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Expanded(
-                              child: NextButtonWidget.white(
-                                  label: "Pular",
-                                  onTap: () {
-                                    if (!lastQuestion) {
-                                      pageController.nextPage(
-                                        duration: Duration(milliseconds: 100),
-                                        curve: Curves.linear,
-                                      );
-                                      selected = question.answered;
-                                    } else {
-                                      // TODO: lógica de fim de questionario
-                                      Navigator.pop(context);
-                                    }
-                                  })),
-                          SizedBox(width: 7),
+                          ...(!lastQuestion
+                              ? [
+                                  Expanded(
+                                      child: NextButtonWidget.white(
+                                          label: "Pular",
+                                          onTap: () {
+                                            if (!lastQuestion) {
+                                              pageController.nextPage(
+                                                duration:
+                                                    Duration(milliseconds: 100),
+                                                curve: Curves.linear,
+                                              );
+                                              selected = question.answered;
+                                            } else {
+                                              // TODO: lógica de fim de questionario
+                                              Navigator.pop(context);
+                                            }
+                                          })),
+                                  SizedBox(width: 7),
+                                ]
+                              : []),
                           Expanded(
                               child: NextButtonWidget.green(
                                   label:
                                       lastQuestion ? "Finalizar" : "Confirmar",
                                   onTap: () async {
-                                    if (selected == null) {
+                                    if (selected == null && !lastQuestion) {
                                       return;
                                     }
                                     if (question.answered == null) {
@@ -112,7 +118,12 @@ class _ChallengePageState extends State<ChallengePage> {
                                       selected = question.answered;
                                     } else {
                                       // TODO: lógica de fim de questionario
-                                      Navigator.pop(context);
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ResultPage(quiz: widget.quiz)),
+                                      );
                                     }
                                   })),
                         ])))));
