@@ -47,85 +47,83 @@ class _ChallengePageState extends State<ChallengePage> {
   Widget build(BuildContext context) {
     print("rebuild challenge");
     print(this.controller.currentQuestion);
-    return GoBackByEscController(
-        child: Scaffold(
-            appBar: PreferredSize(
-                preferredSize: Size.fromHeight(60),
-                child: SafeArea(
-                    top: true,
-                    child: ValueListenableBuilder<int>(
-                        valueListenable: controller.currentQuestionNotifier,
-                        builder: (context, value, _) => QuestionIndicatorWidget(
-                            totalQuestoes: widget.quiz.questions.length,
-                            questaoAtual: controller.currentQuestion)))),
-            body: PageView(
-                physics: NeverScrollableScrollPhysics(),
-                controller: pageController,
-                children: widget.quiz.questions
-                    .map((q) => QuizWidget(
-                        question: q,
-                        onTap: (i) {
-                          print("selected $i");
-                          this.selected = i;
-                        }))
-                    .toList()),
-            bottomNavigationBar: SafeArea(
-                bottom: true,
-                child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ...(!lastQuestion
-                              ? [
-                                  Expanded(
-                                      child: NextButtonWidget.white(
-                                          label: "Pular",
-                                          onTap: () {
-                                            if (!lastQuestion) {
-                                              pageController.nextPage(
-                                                duration:
-                                                    Duration(milliseconds: 100),
-                                                curve: Curves.linear,
-                                              );
-                                              selected = question.answered;
-                                            } else {
-                                              // TODO: lógica de fim de questionario
-                                              Navigator.pop(context);
-                                            }
-                                          })),
-                                  SizedBox(width: 7),
-                                ]
-                              : []),
-                          Expanded(
-                              child: NextButtonWidget.green(
-                                  label:
-                                      lastQuestion ? "Finalizar" : "Confirmar",
-                                  onTap: () async {
-                                    if (selected == null && !lastQuestion) {
-                                      return;
-                                    }
-                                    if (question.answered == null) {
-                                      question.answered = selected;
-                                    }
-                                    await Future.delayed(Duration(seconds: 1));
-                                    if (!lastQuestion) {
-                                      pageController.nextPage(
-                                        duration: Duration(milliseconds: 100),
-                                        curve: Curves.linear,
-                                      );
-                                      selected = question.answered;
-                                    } else {
-                                      // TODO: lógica de fim de questionario
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ResultPage(quiz: widget.quiz)),
-                                      );
-                                    }
-                                  })),
-                        ])))));
+    return Scaffold(
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: SafeArea(
+                top: true,
+                child: ValueListenableBuilder<int>(
+                    valueListenable: controller.currentQuestionNotifier,
+                    builder: (context, value, _) => QuestionIndicatorWidget(
+                        totalQuestoes: widget.quiz.questions.length,
+                        questaoAtual: controller.currentQuestion)))),
+        body: PageView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: pageController,
+            children: widget.quiz.questions
+                .map((q) => QuizWidget(
+                    question: q,
+                    onTap: (i) {
+                      print("selected $i");
+                      this.selected = i;
+                    }))
+                .toList()),
+        bottomNavigationBar: SafeArea(
+            bottom: true,
+            child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ...(!lastQuestion
+                          ? [
+                              Expanded(
+                                  child: NextButtonWidget.white(
+                                      label: "Pular",
+                                      onTap: () {
+                                        if (!lastQuestion) {
+                                          pageController.nextPage(
+                                            duration:
+                                                Duration(milliseconds: 100),
+                                            curve: Curves.linear,
+                                          );
+                                          selected = question.answered;
+                                        } else {
+                                          // TODO: lógica de fim de questionario
+                                          Navigator.pop(context);
+                                        }
+                                      })),
+                              SizedBox(width: 7),
+                            ]
+                          : []),
+                      Expanded(
+                          child: NextButtonWidget.green(
+                              label: lastQuestion ? "Finalizar" : "Confirmar",
+                              onTap: () async {
+                                if (selected == null && !lastQuestion) {
+                                  return;
+                                }
+                                if (question.answered == null) {
+                                  question.answered = selected;
+                                }
+                                await Future.delayed(Duration(seconds: 1));
+                                if (!lastQuestion) {
+                                  pageController.nextPage(
+                                    duration: Duration(milliseconds: 100),
+                                    curve: Curves.linear,
+                                  );
+                                  selected = question.answered;
+                                } else {
+                                  // TODO: lógica de fim de questionario
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ResultPage(quiz: widget.quiz)),
+                                  );
+                                }
+                              })),
+                    ]))));
   }
 }
